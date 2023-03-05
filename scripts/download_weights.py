@@ -27,7 +27,7 @@ def prompt():
         if 'TRAVIS' in os.environ:
             choice = 'yes'
         else:
-            choice = raw_input().lower()
+            choice = input().lower()
         if choice in valid:
             return valid[choice]
         else:

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, division
+
 
 import sys
 from os.path import dirname
 sys.path.append(dirname(dirname(__file__)))
 from keras import initializers
-from keras.engine import InputSpec, Layer
+# https://stackoverflow.com/questions/67694762/from-keras-engine-import-inputspec-stopped-working
+from keras.layers import InputSpec, Layer
 from keras import backend as K
 
 
@@ -35,7 +36,9 @@ class AttentionWeightedAverage(Layer):
         self.W = self.add_weight(shape=(input_shape[2], 1),
                                  name='{}_W'.format(self.name),
                                  initializer=self.init)
-        self.trainable_weights = [self.W]
+        # https://stackoverflow.com/a/64103510
+        # https://github.com/pierluigiferrari/ssd_keras/issues/322#issuecomment-690380734
+        self._trainable_weights = [self.W]
         super(AttentionWeightedAverage, self).build(input_shape)
 
     def call(self, x, mask=None):
